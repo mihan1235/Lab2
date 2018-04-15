@@ -93,5 +93,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ModelData\ModelDataLib.csproj">
+      <Project>{488635de-0992-4b5e-8e07-bd8e9f5b428a}</Project>
+      <Name>ModelDataLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
