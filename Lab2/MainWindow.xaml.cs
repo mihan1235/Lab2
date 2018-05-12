@@ -64,5 +64,27 @@ namespace Lab2
         {
             e.CanExecute = true;
         }
+
+        private void CanDeleteModelFunc(object sender,CanExecuteRoutedEventArgs e)
+        {
+            if (ListboxOMD.SelectedIndex == -1)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+        }
+
+        private void DeleteModelFunc(object sender,ExecutedRoutedEventArgs e)
+        {
+            int index = ListboxOMD.SelectedIndex;
+            var DO = (ObservableModelData)this.FindResource("key_list_model_data");
+            if (index != -1)
+            {
+                DO.RemoveAt(index);
+            }
+        }
     }
 }

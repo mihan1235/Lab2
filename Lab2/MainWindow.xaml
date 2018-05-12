@@ -14,6 +14,9 @@
         <CommandBinding Command="local:CustomCommands.AddModelCommand"
                         Executed="AddModelFunc"
                         CanExecute="CanAddModelFunc"></CommandBinding>
+        <CommandBinding Command="ApplicationCommands.Delete"
+                        Executed="DeleteModelFunc"
+                        CanExecute="CanDeleteModelFunc"></CommandBinding>
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -33,7 +36,8 @@
             <MenuItem Header="Edit">
                 <MenuItem Header="Add"
                           Command="local:CustomCommands.AddModelCommand"></MenuItem>
-                <MenuItem Header="Remove"></MenuItem>
+                <MenuItem Header="Remove"
+                          Command="ApplicationCommands.Delete"></MenuItem>
             </MenuItem>
             <MenuItem Header="Draw">
                 <MenuItem Header="Draw Selected"></MenuItem>
@@ -42,10 +46,12 @@
         </Menu>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Label Content="ObservableModelData" HorizontalAlignment="Center"></Label>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Auto">
                 <ListBox MinWidth="100"
-                     Height="450"
-                     ItemsSource="{Binding Source={StaticResource key_list_model_data}}"></ListBox>
+                         Height="450"
+                         ItemsSource="{Binding Source={StaticResource key_list_model_data}}"
+                         Name="ListboxOMD"></ListBox>
             </ScrollViewer>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0">
@@ -57,7 +63,8 @@
                 <ToolBar>
                     <Button Content="Add"
                             Command="local:CustomCommands.AddModelCommand"></Button>
-                    <Button Content="Remove"></Button>
+                    <Button Content="Remove"
+                            Command="ApplicationCommands.Delete"></Button>
                 </ToolBar>
                 <ToolBar>
                     <Button Content="Draw selected"></Button>
