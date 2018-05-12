@@ -11,11 +11,22 @@ namespace ModelDataLib
     {
         //Type double for the p parameter of the function;
         public double p;
-        delegate double F(double x, double y, double p);
+        public delegate double F(double x, double y, double p);
+        F Func;
         //An int parameter for the number of grid nodes by X and y coordinates;
-        int number_grid_nodes;
+        public int NumberGridNodes
+        {
+            get;
+            set;
+        }
         //The array (s) of double values – the computed values of the function in the grid nodes.
         double[,,] arr;
+        public ModelData(double p,int num_grid_nodes,F func)
+        {
+            this.p = p;
+            NumberGridNodes = num_grid_nodes;
+            this.Func = func;
+        }
         public string Error { get { return "Error Text"; } }
         public string this[string property]
         {
@@ -41,7 +52,7 @@ namespace ModelDataLib
                 switch (property)
                 {
                     case "NumberGridNodes":
-                        if (!(number_grid_nodes >2))
+                        if (!(NumberGridNodes >2))
                         {
                             add_msg("Number of grid nodes must be greater then 2");
                         }
