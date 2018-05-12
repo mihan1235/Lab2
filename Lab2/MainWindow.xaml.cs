@@ -43,5 +43,23 @@ namespace Lab2
             chart.Series["Series1"].Points.DataBindXY(axisXData, axisYData);
 
         }
+
+        private void AddModelFunc(object sender, ExecutedRoutedEventArgs e)
+        {
+            AddModelData dialog = new AddModelData();
+            if (dialog.ShowDialog()==true)
+            {
+                MessageBox.Show("AddModelCommand");
+            }
+            else
+            {
+
+            }
+        }
+
+        private void CanAddModelFunc(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
     }
 }

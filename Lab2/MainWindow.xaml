@@ -10,6 +10,11 @@
         mc:Ignorable="d"
         xmlns:lib="clr-namespace:ModelDataLib;assembly=ModelData"
         Title="MainWindow" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:CustomCommands.AddModelCommand"
+                        Executed="AddModelFunc"
+                        CanExecute="CanAddModelFunc"></CommandBinding>
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -26,7 +31,8 @@
                 <MenuItem Header="Save"></MenuItem>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="Add"></MenuItem>
+                <MenuItem Header="Add"
+                          Command="local:CustomCommands.AddModelCommand"></MenuItem>
                 <MenuItem Header="Remove"></MenuItem>
             </MenuItem>
             <MenuItem Header="Draw">
@@ -36,7 +42,9 @@
         </Menu>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Label Content="ObservableModelData" HorizontalAlignment="Center"></Label>
-            <ListBox MinWidth="100" MinHeight="370"></ListBox>
+            <ListBox MinWidth="100"
+                     MinHeight="370"
+                     ItemsSource="{Binding Source={StaticResource key_list_model_data}}"></ListBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0">
             <ToolBarTray VerticalAlignment="Top">
@@ -45,7 +53,8 @@
                     <Button Content="Save"></Button>
                 </ToolBar>
                 <ToolBar>
-                    <Button Content="Add"></Button>
+                    <Button Content="Add"
+                            Command="local:CustomCommands.AddModelCommand"></Button>
                     <Button Content="Remove"></Button>
                 </ToolBar>
                 <ToolBar>

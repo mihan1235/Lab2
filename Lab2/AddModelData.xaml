@@ -9,20 +9,16 @@
     <Grid>
         <StackPanel Margin="1">
             <DockPanel Margin="2">
-                <Label Content="Name"></Label>
-                <TextBox Name="CustomProgrammerName" HorizontalAlignment="Stretch" ></TextBox>
+                <Label Content="Type double for the p parameter of the function"></Label>
+                <TextBox Name="Parameter" HorizontalAlignment="Stretch" ></TextBox>
             </DockPanel>
             <DockPanel Margin="2">
-                <Label Content="Surname"></Label>
-                <TextBox Name ="CustomProgrammerSurname" HorizontalAlignment="Stretch" ></TextBox>
-            </DockPanel>
-            <DockPanel Margin="2">
-                <Label Content="Day of birthday"></Label>
-                <DatePicker Name="CustomProgrammerBirth" ></DatePicker>
+                <Label Content="An int parameter for the number of grid nodes by X and y coordinates"></Label>
+                <TextBox Name ="GridNumberNodes" HorizontalAlignment="Stretch" ></TextBox>
             </DockPanel>
             <StackPanel Margin="2">
-                <Label Content="Choose paper's themes:"></Label>
-                <ListBox Name ="ProjectList" ItemsSource="{Binding Source={StaticResource key_department}, Path = ProjectSet }" 
+                <Label Content="Choose function of two variables F (x, y, p), which is defined on the set [0.1] x [0.1] and depends on the parameter p:"></Label>
+                <ListBox Name ="FunctionListBox" ItemsSource="{Binding Source={StaticResource key_list_model_data}, Path = FunctionList }" 
                          MinHeight="119" Width="Auto" SelectionMode="Extended"></ListBox>
             </StackPanel>
             <Grid >

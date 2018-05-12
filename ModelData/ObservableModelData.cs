@@ -34,5 +34,20 @@ namespace ModelDataLib
                                 select obj).First();
             return MaxPModelData;
         }
+
+        public List<ModelData.F> __FunctionList = new List<ModelData.F>();
+        public List<ModelData.F> FunctionList
+        {
+            get;
+            set;
+        }
+
+        public ObservableModelData()
+        {
+
+            __FunctionList.Add(new ModelData.F((x,y,p)=>Math.Exp(x*y)+p));
+            __FunctionList.Add(new ModelData.F((x,y,p)=> x+p*y));
+            __FunctionList.Add(new ModelData.F((x,y,p)=>Math.Sin(5*x+y)));
+        }
     }
 }
