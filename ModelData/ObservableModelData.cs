@@ -30,24 +30,31 @@ namespace ModelDataLib
         public ModelData MaxDistantP(ModelData md)
         {
             var MaxPModelData = (from obj in Items
-                                orderby Math.Abs(obj.p-md.p) descending
+                                orderby Math.Abs(obj.P-md.P) descending
                                 select obj).First();
             return MaxPModelData;
         }
 
-        public List<ModelData.F> __FunctionList = new List<ModelData.F>();
-        public List<ModelData.F> FunctionList
+        
+        public List<FunctionStruct> __FunctionList = new List<FunctionStruct>();
+        public List<FunctionStruct> FunctionList
         {
-            get;
-            set;
+            get
+            {
+                return __FunctionList;
+            }
+            set
+            {
+                __FunctionList = value;
+            }
         }
 
         public ObservableModelData()
         {
 
-            __FunctionList.Add(new ModelData.F((x,y,p)=>Math.Exp(x*y)+p));
-            __FunctionList.Add(new ModelData.F((x,y,p)=> x+p*y));
-            __FunctionList.Add(new ModelData.F((x,y,p)=>Math.Sin(5*x+y)));
+            __FunctionList.Add(new FunctionStruct(new ModelData.F((x,y,p)=>Math.Exp(x*y)+p), "Exp(x*y)+p"));
+            __FunctionList.Add(new FunctionStruct(new ModelData.F((x,y,p)=> x+p*y), "x+p*y"));
+            __FunctionList.Add(new FunctionStruct(new ModelData.F((x,y,p)=>Math.Sin(5*x+y)), "Sin(5*x+y)"));
         }
     }
 }

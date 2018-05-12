@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ModelDataLib;
 
 namespace Lab2
 {
@@ -22,16 +23,37 @@ namespace Lab2
         public AddModelData()
         {
             InitializeComponent();
+            FunctionListBox.SelectedIndex = 0;
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
+            var obj =(ModelData)(this.DataContext);
+            var func_struct = (FunctionStruct)(FunctionListBox.SelectedItem);
+            obj.Func = func_struct.Func;
+            obj.FuncDescription = func_struct._Description;
             this.DialogResult = true;
         }
 
         private void NotAccept_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
+        }
+
+        private void ValidationErrorFunc(object sender, ValidationErrorEventArgs e)
+        {
+            if (e.Action == ValidationErrorEventAction.Added)
+            {
+                if (OkButton != null)
+                {
+                    OkButton.IsEnabled = false;
+                }
+            }
+
+            if (e.Action == ValidationErrorEventAction.Removed)
+            {
+                OkButton.IsEnabled = true;
+            }
         }
     }
 }

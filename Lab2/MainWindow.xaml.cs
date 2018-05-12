@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms.DataVisualization;
 using System.Windows.Forms.DataVisualization.Charting;
+using ModelDataLib;
 
 namespace Lab2
 {
@@ -49,7 +50,9 @@ namespace Lab2
             AddModelData dialog = new AddModelData();
             if (dialog.ShowDialog()==true)
             {
-                MessageBox.Show("AddModelCommand");
+                ModelData obj = (ModelData)dialog.DataContext;
+                var ModelDataList = (ObservableModelData)this.FindResource("key_list_model_data");
+                ModelDataList.Add(obj);
             }
             else
             {

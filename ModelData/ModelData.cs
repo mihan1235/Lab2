@@ -7,27 +7,61 @@ using System.Threading.Tasks;
 
 namespace ModelDataLib
 {
-    public class ModelData: IDataErrorInfo
+    public class FunctionStruct
     {
-        //Type double for the p parameter of the function;
-        public double p;
-        public delegate double F(double x, double y, double p);
-        F Func;
-        //An int parameter for the number of grid nodes by X and y coordinates;
-        public int NumberGridNodes
+        public String _Description;
+
+        public FunctionStruct(ModelData.F func, String description)
+        {
+            this.Func = func;
+            this._Description = description;
+        }
+
+        public ModelData.F Func
         {
             get;
             set;
         }
+
+        public override string ToString()
+        {
+            return _Description;
+        }
+    }
+
+
+    public class ModelData: IDataErrorInfo
+    {
+        public String FuncDescription
+        {
+            get;
+            set;
+        }
+
+        //Type double for the p parameter of the function;
+        public double P
+        {
+            get;
+            set;
+        }
+        public delegate double F(double x, double y, double p);
+        public F Func
+        {
+            get;
+            set;
+        }
+        //An int parameter for the number of grid nodes by X and y coordinates;
+        int _NumberGridNodes=3;
+        public int NumberGridNodes
+        {
+            get { return _NumberGridNodes; }
+            set { _NumberGridNodes = value; }
+        }
         //The array (s) of double values – the computed values of the function in the grid nodes.
         double[,,] arr;
-        public ModelData(double p,int num_grid_nodes,F func)
-        {
-            this.p = p;
-            NumberGridNodes = num_grid_nodes;
-            this.Func = func;
-        }
+
         public string Error { get { return "Error Text"; } }
+
         public string this[string property]
         {
             get
@@ -62,6 +96,17 @@ namespace ModelDataLib
                 }
                 return msg;
             }
+            
+        }
+
+        public override string ToString()
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append("ModelData:\n");
+            str.Append("Function: "+FuncDescription+'\n');
+            str.Append("Parameter: "+P.ToString()+'\n');
+            str.Append("NumberGridNodes: " + NumberGridNodes.ToString()+'\n');
+            return str.ToString();
         }
     }
 }

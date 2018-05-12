@@ -5,25 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab2"
         mc:Ignorable="d"
+        xmlns:lib="clr-namespace:ModelDataLib;assembly=ModelData"
         Title="AddModelData" Height="450" Width="800">
+    <Window.DataContext>
+        <lib:ModelData></lib:ModelData>
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="Label" x:Key="ErrorGridSpaceStyle">
+        <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Content" Value="{Binding ElementName=GridNumberNodes, Path=(Validation.Errors)[0].ErrorContent}"/>
+        <Setter Property="Foreground" Value="Red"/>
+        <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=GridNumberNodes, Path=(Validation.Errors)[0].ErrorContent}"
+                        Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Label" x:Key="ErrorPStyle">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Content" Value="{Binding ElementName=Parameter, Path=(Validation.Errors)[0].ErrorContent}"/>
+            <Setter Property="Foreground" Value="Red"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=Parameter, Path=(Validation.Errors)[0].ErrorContent}"
+                        Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <StackPanel Margin="1">
+        <StackPanel Margin="1" Validation.Error="ValidationErrorFunc">
             <DockPanel Margin="2">
-                <Label Content="Type double for the p parameter of the function"></Label>
-                <TextBox Name="Parameter" HorizontalAlignment="Stretch" ></TextBox>
+                <Label Content="Type parameter of the function"></Label>
+                <TextBox Name="Parameter" HorizontalAlignment="Stretch" 
+                         Text="{Binding Path = P, NotifyOnValidationError=True}"></TextBox>
             </DockPanel>
+            <Label Margin="2" Foreground="Red"
+                           Style="{StaticResource ErrorPStyle}"></Label>
             <DockPanel Margin="2">
                 <Label Content="An int parameter for the number of grid nodes by X and y coordinates"></Label>
-                <TextBox Name ="GridNumberNodes" HorizontalAlignment="Stretch" ></TextBox>
+                <TextBox Name ="GridNumberNodes" 
+                         HorizontalAlignment="Stretch" >
+                    <Binding  Path="NumberGridNodes" NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule></DataErrorValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
             </DockPanel>
+            <Label Margin="2" Foreground="Red"
+                           Style="{StaticResource ErrorGridSpaceStyle}"></Label>
             <StackPanel Margin="2">
                 <Label Content="Choose function of two variables F (x, y, p), which is defined on the set [0.1] x [0.1] and depends on the parameter p:"></Label>
                 <ListBox Name ="FunctionListBox" ItemsSource="{Binding Source={StaticResource key_list_model_data}, Path = FunctionList }" 
                          MinHeight="119" Width="Auto" SelectionMode="Extended"></ListBox>
             </StackPanel>
             <Grid >
-                <Button IsDefault="True" Click="Accept_Click" HorizontalAlignment="Left" Margin="23,5,0,0"
-                        MinWidth="60">Ok</Button>
+                <Button Name="OkButton" 
+                        IsDefault="True" 
+                        Click="Accept_Click" 
+                        HorizontalAlignment="Left" 
+                        Margin="23,5,0,0"
+                        MinWidth="60"
+                        IsEnabled="True">Ok</Button>
                 <Button IsCancel="True" Click="NotAccept_Click" HorizontalAlignment="Right" Margin="0,5,23,0"
                         MinWidth="60">Cancel</Button>
             </Grid>

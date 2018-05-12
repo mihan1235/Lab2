@@ -9,7 +9,7 @@
         xmlns:dvc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
         mc:Ignorable="d"
         xmlns:lib="clr-namespace:ModelDataLib;assembly=ModelData"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="Auto" Width="Auto">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.AddModelCommand"
                         Executed="AddModelFunc"
@@ -42,9 +42,11 @@
         </Menu>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Label Content="ObservableModelData" HorizontalAlignment="Center"></Label>
-            <ListBox MinWidth="100"
-                     MinHeight="370"
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ListBox MinWidth="100"
+                     Height="450"
                      ItemsSource="{Binding Source={StaticResource key_list_model_data}}"></ListBox>
+            </ScrollViewer>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0">
             <ToolBarTray VerticalAlignment="Top">
