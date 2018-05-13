@@ -72,7 +72,18 @@ namespace Lab2
 
         private void DrawP2CommandFunc(object sender, ExecutedRoutedEventArgs e)
         {
+            int SelectedNodeNum = (int)GridComboBox.SelectedValue;
+            var ModelDataObj = (ModelData)ListboxOMD.SelectedItem;
 
+            chart.ChartAreas.Clear();
+            chart.Series.Clear();
+            chart.Legends.Clear();
+            PreparePlotModelData(ref chart, SelectedNodeNum, ref ModelDataObj);
+
+            var ObservableModelDataList = (ObservableModelData)FindResource("key_list_model_data");
+            var MaxDistantPObj = ObservableModelDataList.MaxDistantP(ModelDataObj);
+
+            PreparePlotModelDataMax(ref chart, SelectedNodeNum, ref MaxDistantPObj);
         }
 
         private void CanDrawP2Command(object sender, CanExecuteRoutedEventArgs e)
@@ -87,47 +98,46 @@ namespace Lab2
             }
         }
 
-        private void DrawSelectedCommandFunc(object sender, ExecutedRoutedEventArgs e)
+        private void PreparePlotModelDataMax(ref Chart chart, int SelectedNodeNum, ref ModelData ModelDataObj,
+            bool SetMarker = true)
         {
-            int SelectedNodeNum = (int)GridComboBox.SelectedValue;
-            var ModelDataObj = (ModelData)ListboxOMD.SelectedItem;
             double[,] func_arr;
             ModelDataObj.Compute(out func_arr);
-            
-            chart.ChartAreas.Clear();
-            chart.Series.Clear();
-            chart.Legends.Clear();
-
             {
                 List<double> axisYData = new List<double>();
                 for (int i = 0; i < ModelDataObj.NumberGridNodes; i++)
                 {
                     axisYData.Add(func_arr[i, SelectedNodeNum]);
                 }
+                string series1 = ModelDataObj.FuncDescription + " with fixed x max p";
                 //////////////////////////////////////////////////////////////////////////
                 // Все графики находятся в пределах области построения ChartArea, создадим ее
-                chart.ChartAreas.Add(new ChartArea("Default"));
-                // Добавим линию, и назначим ее в ранее созданную область "Default"
-                chart.Series.Add(new Series("Series1"));
-                chart.Series["Series1"].ChartArea = "Default";
-                chart.Series["Series1"].ChartType = SeriesChartType.Line;
-                chart.Series["Series1"].MarkerStyle = MarkerStyle.Square;
-                chart.Series["Series1"].MarkerSize = 5;
+                chart.ChartAreas.Add(new ChartArea("Default2"));
+                // Добавим линию, и назначим ее в ранее созданную область "Default2"
+                chart.Series.Add(new Series(series1));
+                chart.Series[series1].ChartArea = "Default2";
+                chart.Series[series1].ChartType = SeriesChartType.Line;
+                if (SetMarker)
+                {
+                    chart.Series[series1].MarkerStyle = MarkerStyle.Square;
+                    chart.Series[series1].MarkerSize = 5;
+                }
 
-                // Create a new legend called "Legend1".
-                chart.Legends.Add(new Legend("Legend1"));
-                // Set Docking of the Legend chart to the Default Chart Area.
-                chart.Legends["Legend1"].DockedToChartArea = "Default";
+
+                // Create a new legend called "Legend3".
+                chart.Legends.Add(new Legend("Legend3"));
+                // Set Docking of the Legend chart to the Default2 Chart Area.
+                chart.Legends["Legend3"].DockedToChartArea = "Default2";
 
                 // Assign the legend to Series1.
-                chart.Series["Series1"].Legend = "Legend1";
-                chart.Series["Series1"].IsVisibleInLegend = true;
+                chart.Series[series1].Legend = "Legend3";
+                chart.Series[series1].IsVisibleInLegend = true;
 
-                chart.Legends["Legend1"].Title = "P:" + ModelDataObj.P.ToString() + "\n"
+                chart.Legends["Legend3"].Title = "P:" + ModelDataObj.P.ToString() + "\n"
                     + "j: " + SelectedNodeNum.ToString() + "\n";
 
                 // добавим данные линии
-                chart.Series["Series1"].Points.DataBindXY(ModelDataObj.YArr, axisYData);
+                chart.Series[series1].Points.DataBindXY(ModelDataObj.YArr, axisYData);
                 //////////////////////////////////////////////////////////////////////////
             }
             List<double> AxisXData = new List<double>();
@@ -135,15 +145,97 @@ namespace Lab2
             {
                 AxisXData.Add(func_arr[i, SelectedNodeNum]);
             }
+            string series2 = ModelDataObj.FuncDescription + " with fixed y max p";
+            //////////////////////////////////////////////////////////////////////////
+            // Все графики находятся в пределах области построения ChartArea, создадим ее
+            chart.ChartAreas.Add(new ChartArea("Default3"));
+            // Добавим линию, и назначим ее в ранее созданную область "Default3"
+            chart.Series.Add(new Series(series2));
+            chart.Series[series2].ChartArea = "Default3";
+            chart.Series[series2].ChartType = SeriesChartType.Line;
+            if (SetMarker)
+            {
+                chart.Series[series2].MarkerStyle = MarkerStyle.Square;
+                chart.Series[series2].MarkerSize = 5;
+            }
+
+            // Create a new legend called "Legend4".
+            chart.Legends.Add(new Legend("Legend4"));
+            // Set Docking of the Legend chart to the Default3 Chart Area.
+            chart.Legends["Legend4"].DockedToChartArea = "Default3";
+
+            // Assign the legend to Series2.
+            chart.Series[series2].Legend = "Legend4";
+            chart.Series[series2].IsVisibleInLegend = true;
+
+            chart.Legends["Legend4"].Title = "P:" + ModelDataObj.P.ToString() + "\n"
+                + "j: " + SelectedNodeNum.ToString() + "\n";
+
+            // добавим данные линии
+            chart.Series[series2].Points.DataBindXY(AxisXData, ModelDataObj.XArr);
+            //////////////////////////////////////////////////////////////////////////
+        }
+
+        private void PreparePlotModelData(ref Chart chart, int SelectedNodeNum,ref ModelData ModelDataObj,
+            bool SetMarker = true)
+        {
+            double[,] func_arr;
+            ModelDataObj.Compute(out func_arr);
+            {
+                List<double> axisYData = new List<double>();
+                for (int i = 0; i < ModelDataObj.NumberGridNodes; i++)
+                {
+                    axisYData.Add(func_arr[i, SelectedNodeNum]);
+                }
+                string series1 = ModelDataObj.FuncDescription+" with fixed x";
+                //////////////////////////////////////////////////////////////////////////
+                // Все графики находятся в пределах области построения ChartArea, создадим ее
+                chart.ChartAreas.Add(new ChartArea("Default"));
+                // Добавим линию, и назначим ее в ранее созданную область "Default"
+                chart.Series.Add(new Series(series1));
+                chart.Series[series1].ChartArea = "Default";
+                chart.Series[series1].ChartType = SeriesChartType.Line;
+                if (SetMarker)
+                {
+                    chart.Series[series1].MarkerStyle = MarkerStyle.Square;
+                    chart.Series[series1].MarkerSize = 5;
+                }
+                
+
+                // Create a new legend called "Legend1".
+                chart.Legends.Add(new Legend("Legend1"));
+                // Set Docking of the Legend chart to the Default Chart Area.
+                chart.Legends["Legend1"].DockedToChartArea = "Default";
+
+                // Assign the legend to Series1.
+                chart.Series[series1].Legend = "Legend1";
+                chart.Series[series1].IsVisibleInLegend = true;
+
+                chart.Legends["Legend1"].Title = "P:" + ModelDataObj.P.ToString() + "\n"
+                    + "j: " + SelectedNodeNum.ToString() + "\n";
+
+                // добавим данные линии
+                chart.Series[series1].Points.DataBindXY(ModelDataObj.YArr, axisYData);
+                //////////////////////////////////////////////////////////////////////////
+            }
+            List<double> AxisXData = new List<double>();
+            for (int i = 0; i < ModelDataObj.NumberGridNodes; i++)
+            {
+                AxisXData.Add(func_arr[i, SelectedNodeNum]);
+            }
+            string series2 = ModelDataObj.FuncDescription+" with fixed y";
             //////////////////////////////////////////////////////////////////////////
             // Все графики находятся в пределах области построения ChartArea, создадим ее
             chart.ChartAreas.Add(new ChartArea("Default1"));
             // Добавим линию, и назначим ее в ранее созданную область "Default1"
-            chart.Series.Add(new Series("Series2"));
-            chart.Series["Series2"].ChartArea = "Default1";
-            chart.Series["Series2"].ChartType = SeriesChartType.Line;
-            chart.Series["Series2"].MarkerStyle = MarkerStyle.Square;
-            chart.Series["Series2"].MarkerSize = 5;
+            chart.Series.Add(new Series(series2));
+            chart.Series[series2].ChartArea = "Default1";
+            chart.Series[series2].ChartType = SeriesChartType.Line;
+            if (SetMarker)
+            {
+                chart.Series[series2].MarkerStyle = MarkerStyle.Square;
+                chart.Series[series2].MarkerSize = 5;
+            }
 
             // Create a new legend called "Legend2".
             chart.Legends.Add(new Legend("Legend2"));
@@ -151,15 +243,27 @@ namespace Lab2
             chart.Legends["Legend2"].DockedToChartArea = "Default1";
 
             // Assign the legend to Series2.
-            chart.Series["Series2"].Legend = "Legend2";
-            chart.Series["Series2"].IsVisibleInLegend = true;
+            chart.Series[series2].Legend = "Legend2";
+            chart.Series[series2].IsVisibleInLegend = true;
 
             chart.Legends["Legend2"].Title = "P:" + ModelDataObj.P.ToString() + "\n"
                 + "j: " + SelectedNodeNum.ToString() + "\n";
 
             // добавим данные линии
-            chart.Series["Series2"].Points.DataBindXY(AxisXData, ModelDataObj.XArr);
+            chart.Series[series2].Points.DataBindXY(AxisXData, ModelDataObj.XArr);
             //////////////////////////////////////////////////////////////////////////
+        }
+
+        private void DrawSelectedCommandFunc(object sender, ExecutedRoutedEventArgs e)
+        {
+            int SelectedNodeNum = (int)GridComboBox.SelectedValue;
+            var ModelDataObj = (ModelData)ListboxOMD.SelectedItem;
+            
+            chart.ChartAreas.Clear();
+            chart.Series.Clear();
+            chart.Legends.Clear();
+            PreparePlotModelData(ref chart,SelectedNodeNum,ref ModelDataObj);
+            
         }
 
         private void CanDrawSelectedCommand(object sender, CanExecuteRoutedEventArgs e)
