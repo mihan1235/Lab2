@@ -87,7 +87,11 @@
             </WindowsFormsHost>
             <DockPanel Margin="2" HorizontalAlignment="Left">
                 <Label Content="Select a mesh node number"></Label>
-                <ComboBox MinWidth="20"></ComboBox>
+                <ComboBox DataContext="{Binding ElementName=ListboxOMD, Path=SelectedItem}"
+                          MinWidth="20" 
+                          IsSynchronizedWithCurrentItem="True"      
+                          ItemsSource="{Binding GridArr}"
+                          ></ComboBox>
             </DockPanel>
         </StackPanel>
     </Grid>

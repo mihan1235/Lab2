@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 namespace ModelDataLib
 {
@@ -30,8 +32,20 @@ namespace ModelDataLib
     }
 
 
-    public class ModelData: IDataErrorInfo
+    public class ModelData: IDataErrorInfo,INotifyPropertyChanged
     {
+        /// Need to implement this interface in order to get data binding
+        /// to work properly.
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public String FuncDescription
         {
             get;
@@ -55,10 +69,90 @@ namespace ModelDataLib
         public int NumberGridNodes
         {
             get { return _NumberGridNodes; }
-            set { _NumberGridNodes = value; }
+            set {
+                _NumberGridNodes = value;
+                x_arr = new double[NumberGridNodes];
+                y_arr = new double[NumberGridNodes];
+                fill_arr(ref x_arr, 0, 1);
+                fill_arr(ref y_arr, 0, 1);
+                _GridArr = new ObservableCollection<int>();
+                for (int i = 0; i < NumberGridNodes; i++)
+                {
+                    _GridArr.Add(i);
+                }
+                OnPropertyChanged("GridArr");
+            }
         }
-        //The array (s) of double values – the computed values of the function in the grid nodes.
-        double[,,] arr;
+
+        public ModelData()
+        {
+            _GridArr = new ObservableCollection<int>();
+            for (int i = 0; i < NumberGridNodes; i++)
+            {
+                _GridArr.Add(i);
+            }
+            OnPropertyChanged("GridArr");
+        }
+
+        ObservableCollection<int> _GridArr = new ObservableCollection<int>();
+        public ObservableCollection<int> GridArr { get
+            {
+                return _GridArr;
+            }
+            set
+            {
+                _GridArr = value;
+            }
+        }
+
+        double[] x_arr, y_arr;
+        public double[] XArr
+        {
+            get
+            {
+                return x_arr;
+            }
+            set
+            {
+                x_arr = value;
+            }
+        }
+        public double[] YArr
+        {
+            get
+            {
+                return y_arr;
+            }
+            set
+            {
+                y_arr = value;
+            }
+        }
+
+
+
+        void fill_arr(ref double[] arr, double a, double b)
+        {
+            double h = (b - a) / (double)NumberGridNodes;
+            double tmp = a;
+            for (int i = 0; i < NumberGridNodes; i++)
+            {
+                arr[i] = tmp;
+                tmp += h;
+            }
+        }
+
+        public void Compute(out double[,] func_arr)
+        {
+            func_arr = new double[NumberGridNodes, NumberGridNodes];
+            for (int i = 0; i < NumberGridNodes; i++)
+            {
+                for (int j = 0; j < NumberGridNodes; j++)
+                {
+                    func_arr[i, j] = Func(x_arr[i],y_arr[j],P);
+                }
+            }
+        }
 
         public string Error { get { return "Error Text"; } }
 
