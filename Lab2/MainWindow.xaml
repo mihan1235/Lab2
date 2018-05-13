@@ -17,6 +17,12 @@
         <CommandBinding Command="ApplicationCommands.Delete"
                         Executed="DeleteModelFunc"
                         CanExecute="CanDeleteModelFunc"></CommandBinding>
+        <CommandBinding Command="local:CustomCommands.DrawP2Command"
+                        Executed="DrawP2CommandFunc"
+                        CanExecute="CanDrawP2Command"></CommandBinding>
+        <CommandBinding Command="local:CustomCommands.DrawSelectedCommand"
+                        Executed="DrawSelectedCommandFunc"
+                        CanExecute="CanDrawSelectedCommand"></CommandBinding>
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -40,8 +46,10 @@
                           Command="ApplicationCommands.Delete"></MenuItem>
             </MenuItem>
             <MenuItem Header="Draw">
-                <MenuItem Header="Draw Selected"></MenuItem>
-                <MenuItem Header="Draw P2"></MenuItem>
+                <MenuItem Header="Draw Selected"
+                          Command="local:CustomCommands.DrawSelectedCommand"></MenuItem>
+                <MenuItem Header="Draw P2"
+                          Command="local:CustomCommands.DrawP2Command"></MenuItem>
             </MenuItem>
         </Menu>
         <StackPanel Grid.Row="1" Grid.Column="1">
@@ -67,23 +75,16 @@
                             Command="ApplicationCommands.Delete"></Button>
                 </ToolBar>
                 <ToolBar>
-                    <Button Content="Draw selected"></Button>
-                    <Button Content="Draw P2" Click="DrawP2"></Button>
+                    <Button Content="Draw selected"
+                            Command="local:CustomCommands.DrawSelectedCommand"></Button>
+                    <Button Content="Draw P2"
+                            Command="local:CustomCommands.DrawP2Command"></Button>
                 </ToolBar>
             </ToolBarTray>
             <Label Content="Chart" HorizontalAlignment="Center"></Label>
             <WindowsFormsHost>
                 <dvc:Chart x:Name="chart" MinimumSize="200,100"></dvc:Chart>
             </WindowsFormsHost>
-
-            <DockPanel Margin="2" HorizontalAlignment="Left">
-                <Label Content="Number of nodes in the grid"></Label>
-                <TextBox MinWidth="20"></TextBox>
-            </DockPanel>
-            <DockPanel Margin="2" HorizontalAlignment="Left">
-                <Label Content="P"></Label>
-                <TextBox MinWidth="20"></TextBox>
-            </DockPanel>
             <DockPanel Margin="2" HorizontalAlignment="Left">
                 <Label Content="Select a mesh node number"></Label>
                 <ComboBox MinWidth="20"></ComboBox>

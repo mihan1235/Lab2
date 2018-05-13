@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace ModelDataLib
 {
-    public class ObservableModelData: ObservableCollection<ModelData>
+    public class ObservableModelData: ObservableCollection<ModelData>, INotifyPropertyChanged
     {
         bool collection_is_changed;
         public bool CollectionIsChanged
@@ -55,6 +56,12 @@ namespace ModelDataLib
             __FunctionList.Add(new FunctionStruct(new ModelData.F((x,y,p)=>Math.Exp(x*y)+p), "Exp(x*y)+p"));
             __FunctionList.Add(new FunctionStruct(new ModelData.F((x,y,p)=> x+p*y), "x+p*y"));
             __FunctionList.Add(new FunctionStruct(new ModelData.F((x,y,p)=>Math.Sin(5*x+y)), "Sin(5*x+y)"));
+            CollectionChanged += detect_collection_changed;
+        }
+
+        private void detect_collection_changed(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            CollectionIsChanged = true;
         }
     }
 }
