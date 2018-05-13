@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace ModelDataLib
 {
-    public class ObservableModelData: ObservableCollection<ModelData>, INotifyPropertyChanged
+    [Serializable]
+    public class ObservableModelData: ObservableCollection<ModelData>, INotifyPropertyChanged, IDeserializationCallback
     {
+        [NonSerialized]
         bool collection_is_changed;
         public bool CollectionIsChanged
         {
@@ -62,6 +65,12 @@ namespace ModelDataLib
         private void detect_collection_changed(object sender, NotifyCollectionChangedEventArgs e)
         {
             CollectionIsChanged = true;
+        }
+
+        public void OnDeserialization(object sender)
+        {
+            CollectionIsChanged = false;
+            CollectionChanged += detect_collection_changed;
         }
     }
 }

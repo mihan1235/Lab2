@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace ModelDataLib
 {
+    [Serializable]
     public class FunctionStruct
     {
         public String _Description;
@@ -31,20 +32,21 @@ namespace ModelDataLib
         }
     }
 
-
-    public class ModelData: IDataErrorInfo,INotifyPropertyChanged
+    [Serializable]
+    public class ModelData: IDataErrorInfo/*,INotifyPropertyChanged*/
     {
         /// Need to implement this interface in order to get data binding
         /// to work properly.
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        //private void OnPropertyChanged(string propertyName)
+        //{
+        //    if (PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //[NonSerialized]
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         public String FuncDescription
         {
@@ -80,7 +82,7 @@ namespace ModelDataLib
                 {
                     _GridArr.Add(i);
                 }
-                OnPropertyChanged("GridArr");
+                //OnPropertyChanged("GridArr");
             }
         }
 
@@ -95,7 +97,7 @@ namespace ModelDataLib
             {
                 _GridArr.Add(i);
             }
-            OnPropertyChanged("GridArr");
+            //OnPropertyChanged("GridArr");
         }
 
         ObservableCollection<int> _GridArr = new ObservableCollection<int>();

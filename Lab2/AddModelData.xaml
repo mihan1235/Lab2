@@ -59,8 +59,12 @@
                            Style="{StaticResource ErrorGridSpaceStyle}"></Label>
             <StackPanel Margin="2">
                 <Label Content="Choose function of two variables F (x, y, p), which is defined on the set [0.1] x [0.1] and depends on the parameter p:"></Label>
-                <ListBox Name ="FunctionListBox" ItemsSource="{Binding Source={StaticResource key_list_model_data}, Path = FunctionList }" 
-                         MinHeight="119" Width="Auto" SelectionMode="Extended"></ListBox>
+                <ListBox Name ="FunctionListBox" 
+                         DataContext="{DynamicResource key_list_model_data}"
+                         ItemsSource="{Binding FunctionList }" 
+                         MinHeight="119" 
+                         Width="Auto" 
+                         SelectionMode="Extended"></ListBox>
             </StackPanel>
             <Grid >
                 <Button Name="OkButton" 

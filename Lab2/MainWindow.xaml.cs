@@ -15,6 +15,9 @@ using System.Windows.Shapes;
 using System.Windows.Forms.DataVisualization;
 using System.Windows.Forms.DataVisualization.Charting;
 using ModelDataLib;
+using Microsoft.Win32;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Lab2
 {
@@ -278,5 +281,112 @@ namespace Lab2
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var DO = (ObservableModelData)this.FindResource("key_list_model_data");
+            if (DO.CollectionIsChanged)
+            {
+                MessageBoxResult result = MessageBox.Show("Collection is changed! Do you want to save it?", "Warning",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    save_MDOCollection();
+                }
+            }
+        }
+
+        private void can_new_make_OMDCollection(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+            
+        }
+
+        void save_MDOCollection()
+        {
+            SaveFileDialog save_diag = new SaveFileDialog();
+            if (save_diag.ShowDialog() == true)
+            {
+                try
+                {
+                    BinaryFormatter binFormat = new BinaryFormatter();
+                    using (Stream fStream = new FileStream(save_diag.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        var DO = (ObservableModelData)FindResource("key_list_model_data");
+                        binFormat.Serialize(fStream, DO);
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+            }
+        }
+
+        private void new_make_OMDCollection(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Collection is changed! Do you want to save it?", "Warning",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                save_MDOCollection();
+            }
+            Application.Current.Resources["key_list_model_data"] = new ObservableModelData();
+            chart.ChartAreas.Clear();
+            chart.Series.Clear();
+            chart.Legends.Clear();
+        }
+
+        private void can_open_OMDCollection(object sender, CanExecuteRoutedEventArgs e)
+        {
+            var ObservableModelDataList = (ObservableModelData)FindResource("key_list_model_data");
+            if (ObservableModelDataList.CollectionIsChanged == false)
+            {
+                e.CanExecute = true;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+        private void open_OMDCollection(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog open_diag = new OpenFileDialog();
+            if (open_diag.ShowDialog() == true)
+            {
+                try
+                {
+                    BinaryFormatter binFormat = new BinaryFormatter();
+                    Stream fStream = File.OpenRead(open_diag.FileName);
+                    ObservableModelData DO = (ObservableModelData)binFormat.Deserialize(fStream);
+                    Application.Current.Resources["key_list_model_data"] = DO;
+                }
+                catch(Exception exc)
+                {
+                    MessageBox.Show(exc.ToString(),"Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void can_save_MDOCollection(object sender, CanExecuteRoutedEventArgs e)
+        {
+            var ObservableModelDataList = (ObservableModelData)FindResource("key_list_model_data");
+            if (ObservableModelDataList.CollectionIsChanged == true)
+            {
+                e.CanExecute = true;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+        private void save_MDOCollection(object sender, ExecutedRoutedEventArgs e)
+        {
+            save_MDOCollection();
+            var DO = (ObservableModelData)this.FindResource("key_list_model_data");
+            DO.CollectionIsChanged = false;
+        }
     }
 }

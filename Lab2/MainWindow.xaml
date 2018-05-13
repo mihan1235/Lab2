@@ -9,7 +9,7 @@
         xmlns:dvc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
         mc:Ignorable="d"
         xmlns:lib="clr-namespace:ModelDataLib;assembly=ModelData"
-        Title="MainWindow" Height="Auto" Width="Auto">
+        Title="MainWindow" Height="Auto" Width="Auto" Closing="Window_Closing">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.AddModelCommand"
                         Executed="AddModelFunc"
@@ -17,6 +17,15 @@
         <CommandBinding Command="ApplicationCommands.Delete"
                         Executed="DeleteModelFunc"
                         CanExecute="CanDeleteModelFunc"></CommandBinding>
+        <CommandBinding Command="ApplicationCommands.New"
+                        Executed="new_make_OMDCollection"
+                        CanExecute="can_new_make_OMDCollection"></CommandBinding>
+        <CommandBinding Command="ApplicationCommands.Open"
+                        Executed="open_OMDCollection"
+                        CanExecute="can_open_OMDCollection"></CommandBinding>
+        <CommandBinding Command="ApplicationCommands.Save"
+                        Executed="save_MDOCollection"
+                        CanExecute="can_save_MDOCollection"></CommandBinding>
         <CommandBinding Command="local:CustomCommands.DrawP2Command"
                         Executed="DrawP2CommandFunc"
                         CanExecute="CanDrawP2Command"></CommandBinding>
@@ -36,9 +45,12 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.ColumnSpan="3">
             <MenuItem Header="File">
-                <MenuItem Header="New"></MenuItem>
-                <MenuItem Header="Open"></MenuItem>
-                <MenuItem Header="Save"></MenuItem>
+                <MenuItem Header="New"
+                          Command="ApplicationCommands.New"></MenuItem>
+                <MenuItem Header="Open"
+                          Command="ApplicationCommands.Open"></MenuItem>
+                <MenuItem Header="Save"
+                          Command="ApplicationCommands.Save"></MenuItem>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Add"
@@ -59,15 +71,17 @@
                           HorizontalScrollBarVisibility="Auto">
                 <ListBox MinWidth="100"
                          Height="450"
-                         ItemsSource="{Binding Source={StaticResource key_list_model_data}}"
+                         ItemsSource="{DynamicResource key_list_model_data}"
                          Name="ListboxOMD"></ListBox>
             </ScrollViewer>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0">
             <ToolBarTray VerticalAlignment="Top">
                 <ToolBar>
-                    <Button Content="Open"></Button>
-                    <Button Content="Save"></Button>
+                    <Button Content="Open"
+                            Command="ApplicationCommands.Open"></Button>
+                    <Button Content="Save"
+                            Command="ApplicationCommands.Save"></Button>
                 </ToolBar>
                 <ToolBar>
                     <Button Content="Add"
