@@ -86,6 +86,10 @@ namespace ModelDataLib
 
         public ModelData()
         {
+            x_arr = new double[NumberGridNodes];
+            y_arr = new double[NumberGridNodes];
+            fill_arr(ref x_arr, 0, 1);
+            fill_arr(ref y_arr, 0, 1);
             _GridArr = new ObservableCollection<int>();
             for (int i = 0; i < NumberGridNodes; i++)
             {
@@ -149,7 +153,7 @@ namespace ModelDataLib
             {
                 for (int j = 0; j < NumberGridNodes; j++)
                 {
-                    func_arr[i, j] = Func(x_arr[i],y_arr[j],P);
+                    func_arr[i, j] = Func(x_arr[i], y_arr[j], P);
                 }
             }
         }

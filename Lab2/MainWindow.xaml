@@ -31,9 +31,10 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Menu Grid.ColumnSpan="2">
+        <Menu Grid.ColumnSpan="3">
             <MenuItem Header="File">
                 <MenuItem Header="New"></MenuItem>
                 <MenuItem Header="Open"></MenuItem>
@@ -52,7 +53,7 @@
                           Command="local:CustomCommands.DrawP2Command"></MenuItem>
             </MenuItem>
         </Menu>
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel Grid.Row="1" Grid.Column="2">
             <Label Content="ObservableModelData" HorizontalAlignment="Center"></Label>
             <ScrollViewer VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Auto">
@@ -82,17 +83,20 @@
                 </ToolBar>
             </ToolBarTray>
             <Label Content="Chart" HorizontalAlignment="Center"></Label>
-            <WindowsFormsHost>
-                <dvc:Chart x:Name="chart" MinimumSize="200,100"></dvc:Chart>
+            <WindowsFormsHost Height="400" Margin="2">
+                <dvc:Chart x:Name="chart"></dvc:Chart>
             </WindowsFormsHost>
             <DockPanel Margin="2" HorizontalAlignment="Left">
                 <Label Content="Select a mesh node number"></Label>
                 <ComboBox DataContext="{Binding ElementName=ListboxOMD, Path=SelectedItem}"
                           MinWidth="20" 
-                          IsSynchronizedWithCurrentItem="True"      
+                          IsSynchronizedWithCurrentItem="True"
                           ItemsSource="{Binding GridArr}"
+                          Name="GridComboBox"
                           ></ComboBox>
             </DockPanel>
         </StackPanel>
+        <GridSplitter Grid.Column="1" Grid.RowSpan="3" VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Center" Width="5"></GridSplitter>
     </Grid>
 </Window>
